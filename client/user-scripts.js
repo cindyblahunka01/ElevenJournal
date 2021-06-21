@@ -2,19 +2,19 @@
 *** USER SIGNUP ***
 ************************** */
 function userSignUp() {
-    //  console.log('userSignUp Function Called')
+  //  console.log('userSignUp Function Called')
 
     let userEmail = document.getElementById("emailSignup").value;
     let userPass = document.getElementById("pwdSignup").value;
 
     let newUserData = {
-        user: {
-            email: userEmail,
-            password: userPass
-        }
+      user: {
+        email: userEmail,
+        password: userPass
+      }
     };
 
-    console.log(`newUserData --> ${newUserData.user.email} S{newUserData.user.password}`);
+    console.log(`newUserData --> ${newUserData.user.email} ${newUserData.user.password}`);
 
     fetch(`http://localhost:3000/user/register`, {
         method: "POST",
@@ -34,15 +34,15 @@ function userSignUp() {
             console.error(err)
         })
 };
-    
-    
-    /* *************************
-    *** USER LOGIN ***
-    ************************** */
-    function userLogin() {
-        let userEmail = document.getElementById("emailLogin").value;
-        let userPass = document.getElementById("pwdLogin").value;
-        console.log(userEmail, userPass)
+
+
+/* *************************
+*** USER LOGIN ***
+************************** */
+function userLogin() {
+    let userEmail = document.getElementById("emailLogin").value;
+    let userPass = document.getElementById("pwdLogin").value;
+    console.log(userEmail, userPass)
 
 
     let UserData = {
@@ -50,7 +50,7 @@ function userSignUp() {
             email: userEmail,
             password: userPass
         }
-    };
+    }
 
     console.log(UserData);
 
@@ -72,21 +72,39 @@ function userSignUp() {
             console.error(err)
         })
 };
-        
-    
-    /* *************************
-    *** USER LOGOUT ***
-    ************************** */
-    function userLogout() {
-     console.log('userLogout Function Called')
+
+
+/* *************************
+*** USER LOGOUT ***
+************************** */
+function userLogout() {
+    localStorage.setItem('SessionToken', undefined);
+    console.log('userLogout Function Called');
+    console.log(`SessionToken --> ${localStorage.SessionToken}`);
+    tokenChecker();
+};
+
+
+/* *************************
+ *** TOKEN CHECKER FUNCTION ***
+************************** */
+function tokenChecker() {
+    console.log('tokenChecker Function Called');
+    let display = document.getElementById('journals');
+    let header = document.createElement('h5');
+    let accessToken = localStorage.getItem('SessionToken');
+    let alertText = "Log in or sign up to get started!";
+
+    for (let i = 0; i < display.childNodes.length; i++) {
+        display.removeChild(display.firstChild);
     }
-    
-    
-    /* *************************
-     *** TOKEN CHECKER FUNCTION ***
-    ************************** */
-    function tokenChecker() {
-     console.log('tokenChecker Function Called')
+
+    if (accessToken === 'undefined') {
+        display.appendChild(header);
+        header.textContent = alertText;
+        header.setAttribute('id', 'defaultLogin');
+    } else {
+        null
     }
-    tokenChecker()
-    
+}
+tokenChecker();
